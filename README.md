@@ -14,8 +14,6 @@ A production-grade Chrome Extension for harvesting visible text from any webpage
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-f0a500?style=flat-square&logo=googlechrome&logoColor=black)](https://developer.chrome.com/docs/extensions/mv3/)
 [![Version](https://img.shields.io/badge/Version-1.0.0-60a5fa?style=flat-square)]()
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-f87171?style=flat-square)](CONTRIBUTING.md)
-
 </div>
 
 ---
@@ -71,7 +69,7 @@ Built for **security researchers**, **data analysts**, **journalists**, and **po
 
 | Popup — Idle State | Popup — Extracted |
 |---|---|
-| _(screenshot)_ | _(screenshot)_ |
+![Idle](assets/screenshot-idle.png) | ![Extracted](assets/screenshot-extracted.png) |
 
 ---
 
