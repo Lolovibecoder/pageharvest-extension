@@ -32,9 +32,6 @@ A production-grade Chrome Extension for harvesting visible text from any webpage
 - [Use Cases](#-use-cases)
 - [Error Handling](#-error-handling)
 - [Known Limitations](#-known-limitations)
-- [Contributing](#-contributing)
-- [License](#-license)
-
 ---
 
 ## 🔍 Overview
