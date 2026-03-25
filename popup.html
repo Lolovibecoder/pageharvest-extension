@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PageHarvest</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ─── Header ───────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon">
+          <!-- Harvest / crop icon -->
+          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 1C4.13 1 1 4.13 1 8s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 12.25A5.25 5.25 0 1 1 8 2.75a5.25 5.25 0 0 1 0 10.5zM8 5a.75.75 0 0 0-.75.75v1.5H5.75a.75.75 0 0 0 0 1.5h1.5v1.5a.75.75 0 0 0 1.5 0v-1.5h1.5a.75.75 0 0 0 0-1.5h-1.5v-1.5A.75.75 0 0 0 8 5z"/>
+          </svg>
+        </div>
+        <span class="logo-text">PageHarvest<span class="logo-version"> v1.0</span></span>
+      </div>
+
+      <div id="statusBadge" class="status-badge idle">
+        <span class="status-dot"></span>
+        <span id="statusText">IDLE</span>
+      </div>
+    </div>
+
+    <div class="page-meta" id="pageMeta">
+      <span class="page-meta-icon">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 14.5A6.5 6.5 0 1 1 8 1.5a6.5 6.5 0 0 1 0 13zM9 5H7v1.5H5.5v2H7V10h2V8.5h1.5v-2H9V5z"/>
+        </svg>
+      </span>
+      <span class="page-meta-url" id="pageUrl">Loading page info…</span>
+    </div>
+  </header>
+
+  <!-- ─── Main ──────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-value" id="statWords">—</span>
+        <span class="stat-label">Words</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statChars">—</span>
+        <span class="stat-label">Chars</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statLines">—</span>
+        <span class="stat-label">Lines</span>
+      </div>
+    </div>
+
+    <!-- Text Preview -->
+    <div class="preview-container">
+      <div class="preview-label">
+        <span>Output Preview</span>
+        <button class="preview-copy-btn" id="copyBtn" disabled>
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M10.5 1h-7A1.5 1.5 0 0 0 2 2.5v9A1.5 1.5 0 0 0 3.5 13H4v.5A1.5 1.5 0 0 0 5.5 15h7a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 12.5 4H12V2.5A1.5 1.5 0 0 0 10.5 1zM3.5 11.5V2.5h7V4H5.5A1.5 1.5 0 0 0 4 5.5v6H3.5zm2 2v-8h7v8h-7z"/>
+          </svg>
+          <span id="copyBtnText">COPY</span>
+        </button>
+      </div>
+      <div class="preview-box" id="previewBox">
+        <span class="preview-placeholder" id="previewPlaceholder">
+          Click "Extract" to harvest text from this page
+        </span>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage">
+      <span class="error-icon">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 12.5A5.5 5.5 0 1 1 8 2.5a5.5 5.5 0 0 1 0 11zM7.25 5h1.5v4.5h-1.5V5zM8 11.5a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75z"/>
+        </svg>
+      </span>
+      <span id="errorText">An error occurred.</span>
+    </div>
+
+    <!-- Toggles -->
+    <div class="toggles-section">
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span class="toggle-label">Auto-extract on load</span>
+          <span class="toggle-desc">Run extraction when popup opens</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleAutoExtract" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <span class="toggle-label">Auto-download on extract</span>
+          <span class="toggle-desc">Save .txt file automatically</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleAutoDownload" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button class="btn btn-extract" id="extractBtn">
+        <svg class="btn-icon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm1 1.5h8v7H4v-7zm0 8.5v-1h8v1H4z"/>
+        </svg>
+        <span id="extractBtnText">Extract</span>
+      </button>
+
+      <button class="btn btn-download" id="downloadBtn" disabled>
+        <svg class="btn-icon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 10.5 4.5 7H7V2h2v5h2.5L8 10.5zm-5 2v-1.5h10V12.5H3z"/>
+        </svg>
+        <span id="downloadBtnText">Download</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ─── Footer ────────────────────────────────────────── -->
+  <footer class="footer">
+    <span class="footer-text">PageHarvest · Text Extractor</span>
+    <span class="footer-build" id="footerTimestamp">—</span>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
